@@ -1,0 +1,14 @@
+x1 = 5          % first value
+x2 = 10         % second value
+x3 = x1 + x2    % sum
+print x3        % logs "Process id: <pid> x3 : F" (15 in hex)
+x4 = 0          % loop counter
+.loop
+x15 = x4 - 5    % compare counter to 5
+BEQ .done
+print x4        % log the counter each time through the loop
+x4 = x4 + 1
+BAL .loop
+.done
+x5 = 0          % address register
+[x5] = x3       % store the sum at address 0

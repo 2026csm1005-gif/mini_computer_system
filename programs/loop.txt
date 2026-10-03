@@ -1,0 +1,10 @@
+x1 = 0        % loop counter
+x2 = 80       % number of iterations
+.loopstart
+x3 = x1 - x2  % compare counter to limit (sets Z when x1 == x2)
+BEQ .loopend
+print x1
+x1 = x1 + 1
+BAL .loopstart
+.loopend
+print x1

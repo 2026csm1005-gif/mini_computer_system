@@ -1,0 +1,39 @@
+x1 = [0]        % N
+v1 = [4]        % load the 8 filter weights once
+x3 = 36         % base address of the input array
+x4 = 0          % k, sliding window index
+x5 = x1 - 8     % loop bound = N - 8
+x13 = 200       % scratch/output-base helper constant
+x7 = x13 + 56   % output base address = 256 (0x100); 256 > 255 so it must be built at runtime
+.loop
+x15 = x4 - x5   % compare k to the bound
+BGE .done       % exit once k >= N-8
+x8 = x4 * 4     % byte offset = k*4
+x9 = x3 + x8    % input segment address = input_base + k*4
+v2 = [x9]       % load input[k..k+7]
+v3 = v2 * v1    % element-wise multiply with the weights
+[200] = v3      % spill the product vector to scratch memory
+
+x12 = 0         % running sum
+x11 = [200]
+x12 = x12 + x11
+x11 = [204]
+x12 = x12 + x11
+x11 = [208]
+x12 = x12 + x11
+x11 = [212]
+x12 = x12 + x11
+x11 = [216]
+x12 = x12 + x11
+x11 = [220]
+x12 = x12 + x11
+x11 = [224]
+x12 = x12 + x11
+x11 = [228]
+x12 = x12 + x11
+
+x10 = x7 + x8   % output address = output_base + k*4
+[x10] = x12     % output[k] = sum
+x4 = x4 + 1     % k++
+BAL .loop
+.done

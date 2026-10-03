@@ -1,0 +1,16 @@
+x1 = 0          % elements processed so far
+x2 = [0]        % N
+x9 = x2 * 4     % byte length of one array = N*4
+x3 = 4          % base address of Array A
+x4 = x3 + x9    % base address of Array B = 4 + N*4
+x5 = x4 + x9    % base address of Array C = addr(B) + N*4
+.loop
+x15 = x1 - x2   % compare processed count to N
+BEQ .done
+v1 = [x3]       % load 8 elements of A (address register x3 auto-advances by 32)
+v2 = [x4]       % load 8 elements of B (address register x4 auto-advances by 32)
+v3 = v1 + v2    % vector add, 8 lanes at once
+[x5] = v3       % store 8 result elements to C (address register x5 auto-advances by 32)
+x1 = x1 + 8     % processed += 8
+BAL .loop
+.done
